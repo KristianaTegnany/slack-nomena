@@ -22,15 +22,14 @@ export const WorkspaceSidebar = (props: Props) => {
   const user = useCheckAuth()
   const usersOnWS = useGetUserFromWS(workspaceID)
 
-  const handleNewChannel = useCallback(async (channel: string) => {
+  const handleNewChannel = useCallback((channel: string) => {
     if (user && user.uid && channel.length) {
       const newChannel = {
         name: channel, createdBy: user.uid, workspaceId: workspaceID
       } as ChannelType
-      const res = await createChannel(newChannel)
-      console.log({ res })
+      createChannel(newChannel).then(console.log)
     }
-  }, []);
+  }, [user]);
 
   return (
     <div className="flex flex-col gap-y-2 bg-[#5E2C5F] h-full">

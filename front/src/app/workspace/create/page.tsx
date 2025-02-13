@@ -99,6 +99,17 @@ const JoinWorkspacePage = () => {
           </fieldset>
         </form>
       </Form>
+      <div className='flex items-center my-6'>
+        <div className='mr-[10px] flex-1 border-t bg-neutral-300' />
+        <Typography text=' ' variant='p' />
+        <div className='ml-[10px] flex-1 border-t bg-neutral-300' />
+      </div>
+      {!document.referrer.includes('login') && <Button
+        variant={"outline"}
+        className='w-full my-5 text-primary flex space-x-3 py-6'
+        onClick={() => router.back()}>
+        <Typography text='Cancel' variant='p' />
+      </Button>}
     </div>
   );
 };

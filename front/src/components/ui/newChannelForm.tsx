@@ -11,9 +11,9 @@ interface NewChannelFormProps {
 export const NewChannelForm = ({ onClose, onSubmit }: NewChannelFormProps) => {
   const [channelName, setChannelName] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    onSubmit(channelName);
-  };
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   onSubmit(channelName);
+  // };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -23,7 +23,7 @@ export const NewChannelForm = ({ onClose, onSubmit }: NewChannelFormProps) => {
           variant='h6'
           className='mb-3'
         />
-        <form onSubmit={handleSubmit}>
+        <form>
           <Input
             value={channelName}
             onChange={(e) => setChannelName(e.target.value)}
@@ -33,7 +33,7 @@ export const NewChannelForm = ({ onClose, onSubmit }: NewChannelFormProps) => {
             <Button type="button" variant="secondary" onClick={onClose} className="w-full hover:bg-slate-200">
               Cancel
             </Button>
-            <Button type="submit" variant="secondary" className="w-full bg-primary-dark text-slate-50 hover:bg-primary-light ">
+            <Button onClick={() => onSubmit(channelName)} variant="secondary" className="w-full bg-primary-dark text-slate-50 hover:bg-primary-light ">
               Create
             </Button>
           </div>

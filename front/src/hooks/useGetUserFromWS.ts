@@ -8,7 +8,7 @@ const useGetUserFromWS = (wsId: string) => {
   useEffect(() => {
     getWorkspaceById(wsId).then((res: WorkSpaceType) => {
       if (res && res.members) {
-        const members = res.members.map(async (m) => await getUserByUid(m))
+        const members = [...res.members, res.userid].map(async (m) => await getUserByUid(m))
         Promise.all(members).then(res => setUsers(res.map(u => {
           if (u.displayName === undefined || !(u.displayName && u.displayName.length)) return { ...u, displayName: u.email.split('@')[0] }
           return u

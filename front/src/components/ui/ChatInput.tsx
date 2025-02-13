@@ -82,7 +82,9 @@ export const ChatInput = ({ placeholder, getMessage }: ChatInputProps) => {
         image: undefined,
       };
 
-      const {ops:[{insert: message}]} = JSON.parse(body)
+      const { ops } = JSON.parse(body)
+
+      const message = ops.map((op: any) => op.insert).join(' ')
 
       getMessage(message)
 

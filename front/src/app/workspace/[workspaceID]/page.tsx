@@ -27,10 +27,10 @@ export default function WorkspacePage({ params }: { params: Promise<Params> }) {
   const [loading, setLoading] = useState(false)
   
   useEffect(() =>{
-    if(allChannels && allChannels?.length > 0){
+    if(allChannels?.length){
       router.push(`${resolvedParams.workspaceID}/${allChannels[0].id}`)
     }
-  }, [allChannels?.length])
+  }, [allChannels])
 
   const handleCreateChannel = useCallback(async () => {
     setLoading(true)
@@ -45,7 +45,7 @@ export default function WorkspacePage({ params }: { params: Promise<Params> }) {
   }, [channel, user, resolvedParams])
 
   return !isOnline? <Offline /> : (
-    <div className="flex flex-col" style={{ height: 'calc(100vh - 3.75rem)' }}>
+    (allChannels === undefined ? "loading..." : !allChannels.length && <div className="flex flex-col" style={{ height: 'calc(100vh - 3.75rem)' }}>
       <div className=" overflow-y-auto pb-8">
         <div className="flex-1 flex flex-col pb-4 mt-12">
           <div className="flex flex-col gap-y-2 h-full items-center justify-center">
@@ -62,7 +62,7 @@ export default function WorkspacePage({ params }: { params: Promise<Params> }) {
             </div>
             <div className='max-w-[460px]'>
               <Typography
-                text='Create new channel'
+                text='Create new channel first'
                 variant='h2'
                 className='mb-3'
               />
@@ -80,6 +80,6 @@ export default function WorkspacePage({ params }: { params: Promise<Params> }) {
           </div>
         </div>
       </div>
-    </div>
+    </div>)
   );
 };

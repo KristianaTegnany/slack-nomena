@@ -1,9 +1,6 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import Typography from "@/components/ui/typography";
-import { Paperclip, User } from "lucide-react";
 import { ChatInput } from "@/components/ui/ChatInput";
-import { BiSolidMessage } from "react-icons/bi";
 import Image from 'next/image'
 import { Message, MessageProps } from "@/components/ui/message";
 import { DMHeader } from "@/components/ui/DMHeader";
@@ -31,14 +28,14 @@ const DMPage = ({ params }: { params: Usable<Params> }) => {
   }, [messages])
 
   const onMessageSend = useCallback((message: string) => {
-    if(user && user.uid) {
+    if (user && user.uid) {
       const dm = {
         senderId: user.uid,
         receiverId: UserID,
         content: message
       } as PrivateMessageType
       sendPrivateMessage(dm).then(res => {
-        if(res && res.messageData) {
+        if (res && res.messageData) {
           messageParser(res.messageData).then(msg => setMssState([...mssState, msg]))
         }
       })
@@ -75,8 +72,6 @@ const DMPage = ({ params }: { params: Usable<Params> }) => {
           return <Message key={index} {...msg} />
         })}
       </div>
-
-
       <div className="mt-auto -mb-6">
         <ChatInput getMessage={onMessageSend} placeholder="type..." />
       </div>

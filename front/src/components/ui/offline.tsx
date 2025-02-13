@@ -5,7 +5,7 @@ export const useNetworkStatus = () => {
   const [isOnline, setOnline] = useState<boolean>(true);
 
   const updateNetworkStatus = () => {
-    setOnline(navigator.onLine);
+    setOnline(navigator?.onLine);
   };
 
   //   sometimes, the load event does not trigger on some browsers, that is why manually calling updateNetworkStatus on initial mount
@@ -23,7 +23,7 @@ export const useNetworkStatus = () => {
         window.removeEventListener("online", updateNetworkStatus);
         window.removeEventListener("offline", updateNetworkStatus);
     };
-  }, [navigator.onLine]);
+  }, [navigator?.onLine]);
 
   return { isOnline };
 };

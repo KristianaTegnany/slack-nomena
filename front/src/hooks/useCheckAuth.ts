@@ -7,7 +7,7 @@ const useCheckAuth = () => {
   const router = useRouter()
   const [user, setUser] = useState<any>(null)
   useEffect(() => {
-    const userData = getSession();
+    const userData = getSession()
     if (!userData) {
       router.push("/login");
     } else {

@@ -8,7 +8,6 @@ const useGetWorkspaceById = (id: string) => {
 
   useEffect(() => {
     getWorkspaceById(id).then(res => {
-      console.log({ res })
       setWorkspaces(res)
     })
   }, [])

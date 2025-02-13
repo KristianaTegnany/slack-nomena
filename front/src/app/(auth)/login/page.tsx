@@ -1,5 +1,4 @@
 "use client"
-import { BsApple } from "react-icons/bs";
 import { FcGoogle } from 'react-icons/fc';
 import { MdOutlineMailOutline } from "react-icons/md";
 import { MdOutlineAutoAwesome } from 'react-icons/md';
@@ -17,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getSession, saveSession, signInWithEmail, signInWithGoogle } from "@/lib/auth";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const Login = () => {
@@ -33,6 +32,8 @@ const Login = () => {
       email: '', password: ''
     },
   });
+
+  const [emailLoading, setEmailLoading] = useState(false)
 
   useEffect(() => {
     const user = getSession()
@@ -50,17 +51,20 @@ const Login = () => {
     }
   }
 
-  const onEmailPassSign = useCallback(async (e) => {
+  const onEmailPassSign = useCallback(async (e: any) => {
     e.preventDefault()
-    const { email, password } = form.getValues()
-    console.log({ email, password })
-    if (email.length && password.length) {
-      const res = await signInWithEmail(email, password)
-      if (res) {
-        console.log({ res })
-        saveSession(res.user)
-        router.push('/workspace')
+    setEmailLoading(true)
+    try{
+      const { email, password } = form.getValues()
+      if (email.length && password.length) {
+        const res = await signInWithEmail(email, password)
+        if (res) {
+          saveSession({...res.user, name: res.user.email.split('@')[0]})
+          router.push('/workspace')
+        }
       }
+    } finally {
+      setEmailLoading(false)
     }
   }, [form])
 
@@ -69,7 +73,7 @@ const Login = () => {
       <div className='max-w-[460px]'>
         <div className='flex justify-center items-center gap-3 mb-4'>
           <Image
-            src="slack.svg"
+            src="/slack.png"
             width={25}
             height={25}
             alt="Slack logo"
@@ -99,17 +103,6 @@ const Login = () => {
             <Typography
               className='text-xl'
               text='Sign in with Google'
-              variant='p'
-            />
-          </Button>
-          <Button
-            variant='outline'
-            className='py-6 border-2 flex space-x-3'
-          >
-            <BsApple size={20} />
-            <Typography
-              className='text-xl'
-              text='Sign in with Apple'
               variant='p'
             />
           </Button>
@@ -154,6 +147,7 @@ const Login = () => {
                 />
 
                 <Button
+                  disabled={emailLoading}
                   onClick={onEmailPassSign}
                   variant='secondary'
                   className=' bg-primary-dark hover:bg-primary-dark/90 w-full my-5 text-white flex space-x-3 py-6'

@@ -1,4 +1,4 @@
-import { rootURL } from "@/api/main";
+import { rootURL } from "@/app/api/main";
 
 export type WorkSpaceType = {
   id?: string,

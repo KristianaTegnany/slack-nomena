@@ -11,10 +11,8 @@ import React, { ReactNode, Usable } from "react";
 type Params = { workspaceID: string, channelID: string }
 
 export default function ChannelPage({ params, children }: { params: Usable<Params>, children: ReactNode }) {
-  const showPanel = false; 
-  const parentMessageId = null;
+  const showPanel = false;
   const resolvedParams = React.use(params);
-  const { workspaceID, channelID } = resolvedParams
 
   return (
     <ResizablePanelGroup
@@ -36,8 +34,6 @@ export default function ChannelPage({ params, children }: { params: Usable<Param
         <>
           <ResizableHandle />
           <ResizablePanel minSize={20} defaultSize={29}>
-
-
 
           </ResizablePanel>
         </>

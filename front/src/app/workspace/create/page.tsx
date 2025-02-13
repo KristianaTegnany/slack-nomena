@@ -58,7 +58,7 @@ const JoinWorkspacePage = () => {
       <div className='max-w-[460px]'>
         <div className='flex justify-center items-center gap-3 mb-4'>
           <Image
-            src="/slack.svg"
+            src="/slack.png"
             width={25}
             height={25}
             alt="Slack logo"

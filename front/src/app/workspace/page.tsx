@@ -7,20 +7,27 @@ import Typography from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import useCheckAuth from "@/hooks/useCheckAuth";
 import useGetWorkspace from "@/hooks/useGetWorkspace";
+import { useEffect } from "react";
+import Offline, { useNetworkStatus } from "@/components/ui/offline";
 
 const WorkspaceSelection = () => {
   const router = useRouter()
 
   const user = useCheckAuth()
   const workspaces = useGetWorkspace()
+  const isOnline = useNetworkStatus()
 
+  useEffect(() =>{
+    if(workspaces.length > 0){
+      router.push(`/workspace/${workspaces[0].id}`)
+    }
+  }, [workspaces.length])
 
-  return (
+  return !isOnline? <Offline/>  : (
     <div className="min-h-screen flex flex-col items-center justify-center bg-white p-6">
       <div className="max-w-[460px] text-center space-y-5">
-        {/* Logo & Title */}
         <div className="flex justify-center items-center gap-3 mb-4">
-          <Image src="/slack.svg" width={30} height={30} alt="Slack Logo" />
+          <Image src="/slack.png" width={30} height={30} alt="Slack Logo" />
           <Typography text="Slack Clone" variant="h3" />
         </div>
 
@@ -32,7 +39,6 @@ const WorkspaceSelection = () => {
 
         <Typography text="Choose an option to continue" variant="p" className="opacity-80 mb-6" />
 
-        {/* Buttons */}
         <div className="flex flex-col space-y-3">
           <Button
             variant="outline"
@@ -58,21 +64,6 @@ const WorkspaceSelection = () => {
             <Typography text="Create a New Workspace" variant="p" />
           </Button>
         </div>
-
-        {
-          Boolean(workspaces.length) && <div className="flex flex-col space-y-0">
-            <Typography text="Your workspace(s)" variant="p" className="opacity-50 mb-1" />
-            {
-              workspaces.map((ws, i) => {
-                return <Button onClick={() => router.push(`/workspace/${ws.id}`)} key={JSON.stringify(ws) + i} variant={'link'} className="flex flex-col space-y-0">
-                  <Typography text={ws.name} variant="p" />
-                </Button>
-              })
-            }
-
-          </div>
-        }
-
       </div>
     </div>
   );

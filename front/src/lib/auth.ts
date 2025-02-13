@@ -1,4 +1,4 @@
-import { rootURL } from "@/api/main";
+import { rootURL } from "@/app/api/main";
 import { auth } from "./firebase";
 import {
   GoogleAuthProvider,
@@ -6,6 +6,7 @@ import {
   signInWithPopup,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { UserFromFirebaseType } from "@/hooks/useGetUserDM";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const saveSession = (userData: any) => {
@@ -18,6 +19,7 @@ export const getSession = () => {
 }
 
 export const logout = () => {
+  auth.signOut()
   localStorage.removeItem("user")
 }
 
@@ -76,3 +78,7 @@ export const registerUser = async (email: string, password: string) => {
     return "There is something wrong"
   }
 };
+
+export const getUserByUid = async (uid: string): Promise<UserFromFirebaseType> => {
+  return fetch(`${rootURL}/auth/${uid}`).then(res => res.json())
+}

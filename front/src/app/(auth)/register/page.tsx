@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { registerUser } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 
@@ -34,8 +34,11 @@ const Register = () => {
     },
   });
 
-  const onEmailPassRegister = useCallback((e) => {
+  const [loading, setLoading] = useState(false)
+  
+  const onEmailPassRegister = useCallback((e: any) => {
     e.preventDefault()
+    setLoading(true)
     const {email, password} = form.getValues()
     registerUser(email, password).then(res => {
       if(typeof res !== "string") {
@@ -44,7 +47,7 @@ const Register = () => {
           router.push('login')
         }
       }
-    })
+    }).finally(() => setLoading(false))
   }, [form])
 
   return (
@@ -52,7 +55,7 @@ const Register = () => {
       <div className='max-w-[460px]'>
         <div className='flex justify-center items-center gap-3 mb-4'>
           <Image
-            src="slack.svg"
+            src="/slack.png"
             width={25}
             height={25}
             alt="Slack logo"
@@ -104,6 +107,7 @@ const Register = () => {
                 />
 
                 <Button
+                  disabled={loading}
                   variant='secondary'
                   className=' bg-primary-dark hover:bg-primary-dark/90 w-full my-5 text-white flex space-x-3 py-6'
                   onClick={onEmailPassRegister}

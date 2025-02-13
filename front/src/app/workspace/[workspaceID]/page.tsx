@@ -9,6 +9,7 @@ import useCheckAuth from "@/hooks/useCheckAuth";
 import { ChannelType, createChannel } from "@/lib/channel";
 import { useRouter } from "next/navigation";
 import useGetChannels from "@/hooks/useGetChannels";
+import Offline, { useNetworkStatus } from "@/components/ui/offline";
 
 
 type Params = { workspaceID: string }
@@ -21,19 +22,29 @@ export default function WorkspacePage({ params }: { params: Promise<Params> }) {
   const router = useRouter()
 
   const allChannels = useGetChannels(resolvedParams.workspaceID)
+  const isOnline = useNetworkStatus()
+
+  const [loading, setLoading] = useState(false)
+  
+  useEffect(() =>{
+    if(allChannels && allChannels?.length > 0){
+      router.push(`${resolvedParams.workspaceID}/${allChannels[0].id}`)
+    }
+  }, [allChannels?.length])
 
   const handleCreateChannel = useCallback(async () => {
+    setLoading(true)
     if (user && user.uid && channel.length) {
       const newChannel = {
         name: channel, createdBy: user.uid, workspaceId: resolvedParams.workspaceID
       } as ChannelType
-      const res = await createChannel(newChannel)
-      // router.()
-      window.location.reload()
+      await createChannel(newChannel)
+      router.push(`${resolvedParams.workspaceID}/${newChannel.id}`)
     }
+    setLoading(false)
   }, [channel, user, resolvedParams])
 
-  return (
+  return !isOnline? <Offline /> : (
     <div className="flex flex-col" style={{ height: 'calc(100vh - 3.75rem)' }}>
       <div className=" overflow-y-auto pb-8">
         <div className="flex-1 flex flex-col pb-4 mt-12">
@@ -57,6 +68,7 @@ export default function WorkspacePage({ params }: { params: Promise<Params> }) {
               />
               <Input placeholder='Channel name...' onChange={({ target: { value } }) => setChannel(value)} />
               <Button
+                disabled={loading}
                 onClick={handleCreateChannel}
                 variant='secondary'
                 className=' bg-primary-dark hover:bg-primary-dark/90 w-full my-5 text-white flex space-x-3 py-6'
@@ -64,29 +76,6 @@ export default function WorkspacePage({ params }: { params: Promise<Params> }) {
               >
                 <Typography text='Create Channel' variant='p' />
               </Button>
-            </div>
-            <div className="max-w-[460px] text-center space-y-5">
-              {
-                allChannels ?
-                  <>
-                    {
-                      Boolean(allChannels.length) ?
-                        <div className="flex flex-col space-y-0">
-                          <Typography text="Your channel(s)" variant="p" className="opacity-50 mb-1" />
-                          {
-                            allChannels.map((ch, i) => {
-                              return <Button key={JSON.stringify(ch) + i} onClick={() => router.push(`${resolvedParams.workspaceID}/${ch.id}`)} variant={'link'} className="flex flex-col space-y-0">
-                                <Typography text={ch.name} variant="p" />
-                              </Button>
-                            })
-                          }
-
-                        </div> :
-                        <Typography text="There is no channel yet" variant="p" className="opacity-20 mb-1" />
-                    }
-                  </> :
-                  <Typography text="Loading" variant="p" className="opacity-20 mb-1" />
-              }
             </div>
           </div>
         </div>

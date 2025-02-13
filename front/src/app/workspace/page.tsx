@@ -33,7 +33,7 @@ const WorkspaceSelection = () => {
 
         <Typography text="Get started with Slack" variant="h2" className="mb-3" />
         {user && <div className="flex items-center justify-center my-6">
-          <Image src={user.picture ? user.picture : "/profil.png"} width={50} height={50} alt="User Avatar" className="rounded-full" />
+          <Image src={user.picture ? user.picture : "/user.svg"} width={50} height={50} alt="User Avatar" className="rounded-full" />
           <Typography text={`Welcome ${user.name}`} variant="h4" className="ml-3" />
         </div>}
 

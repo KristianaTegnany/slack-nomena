@@ -1,34 +1,20 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Button } from './button';
-import { Message } from './message';
+import useGetActivities from '@/hooks/useGetActivities';
+import ActivityItem from './activityItem';
 
-// Mock implementation of useGetActivities
-const useGetActivities = () => {
-  return {
-    data: [
-      { id: "1", type: "Message", content: "John Doe sent a message" },
-      { id: "2", type: "File", content: "Jane Smith uploaded a file" },
-      { id: "3", type: "Message", content: "John Doe sent another message" },
-      { id: "4", type: "Message", content: "Apha jedidia sent a message" },
-      { id: "5", type: "File", content: "John Smith uploaded a file" },
-      { id: "6", type: "Message", content: "John Doe sent another message" },
-    ],
-    isLoading: false,
-  };
-};
+type Props = {
+  workspaceId: string,
+}
 
-const ActivitiesSidebar = () => {
-  const { data: activities, isLoading: isLoadingActivities } = useGetActivities();
+const ActivitiesSidebar = (props: Props) => {
+  const { workspaceId } = props
   const [activeTab, setActiveTab] = useState("All");
+  const activities = useGetActivities(workspaceId)
 
-  if (isLoadingActivities) {
-    return <div>Loading...</div>;
-  }
-
-  const filteredActivities = activities.filter(activity => 
+  const filteredActivities = useMemo(() => activities.filter(activity =>
     activeTab === "All" || activity.type === activeTab
-  );
-
+  ), [activities])
   return (
     <div className="flex flex-col h-full bg-white p-4 space-y-8">
       <header>
@@ -46,8 +32,8 @@ const ActivitiesSidebar = () => {
         ))}
       </div>
       <div className="flex-1 overflow-y-auto">
-        {filteredActivities.map((activity, key) => (
-          <Message key={key} time='' avatar='/profil.png' name='Nomena Faliana' text={activity.content} />
+        {filteredActivities.map(activity => (
+          <ActivityItem key={JSON.stringify(activity)} {...activity} />
         ))}
       </div>
     </div>

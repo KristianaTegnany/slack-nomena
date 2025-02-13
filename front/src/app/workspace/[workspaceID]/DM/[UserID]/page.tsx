@@ -58,7 +58,7 @@ const DMPage = ({ params }: { params: Usable<Params> }) => {
           <div className="flex flex-col gap-y-2 h-full items-center justify-center">
             {interlocutor && <div className="flex items-center gap-x-4">
               <Image
-                src={interlocutor.photoURL || "/profil.png"}
+                src={interlocutor.photoURL || "/user.svg"}
                 width={120}
                 height={120}
                 alt="interlocutor id"

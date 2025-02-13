@@ -58,7 +58,7 @@ const DirectMessagesSidebar = (props: Props) => {
         {users && users.map((item, i) => (
           <UserItem
             id={item.uid}
-            image={item.photoURL || "/profil.png"}
+            image={item.photoURL || "/user.svg"}
             key={JSON.stringify(item) + i}
             label={item.displayName}
             variant={"default"}

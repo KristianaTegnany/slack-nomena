@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image'
 import Typography from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
@@ -29,17 +29,6 @@ const JoinWorkspacePage = () => {
         workspaceCode: '',
       },
     });
-
-
-  const [workspaceCode, setWorkspaceCode] = useState('');
-
-  const handleJoinWorkspace = () => {
-    if (workspaceCode) {
-      
-    } else {
-      alert('Please enter a workspace code.');
-    }
-  };
 
   return (
     <div className='min-h-screen p-5 grid text-center place-content-center bg-white'>

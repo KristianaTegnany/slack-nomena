@@ -10,6 +10,7 @@ import { messageParser, parseDateToDDMMYYYY } from "@/lib/parser";
 import useGetMessagesChannel from "@/hooks/useGetMessagesChannel";
 import useCheckAuth from "@/hooks/useCheckAuth";
 import { ChannelMessageType, sendChannelMessage } from "@/lib/message";
+import { ActivityType, ActivityTypeEnum, createActivity } from "@/lib/activity";
 
 type Params = { workspaceID: string, channelID: string }
 
@@ -26,7 +27,7 @@ const ChannelPage = ({ params }: { params: Usable<Params> }) => {
   }, [messages])
 
   const onMessageSend = useCallback((message: string) => {
-    if (user && user.uid) {
+    if (user && user.uid && channel) {
       const channelMsg = {
         senderId: user.uid,
         channelId: channelID,
@@ -35,10 +36,18 @@ const ChannelPage = ({ params }: { params: Usable<Params> }) => {
       sendChannelMessage(channelMsg).then(res => {
         if (res && res.messageData) {
           messageParser(res.messageData).then(msg => setMssState([...mssState, msg]))
+          const newActivity = {
+            desciption: `${user.name} sent a message in channel ${channel.name}`,
+            type: ActivityTypeEnum.MESSAGE,
+            userId: user.uid,
+            workspaceId: workspaceID,
+            channelId: channelID,
+          } as ActivityType
+          createActivity(newActivity).then()
         }
       })
     }
-  }, [mssState, user])
+  }, [mssState, user, channel])
 
   return (
     <div className="flex flex-col" style={{ height: 'calc(100vh - 3.75rem)' }}>

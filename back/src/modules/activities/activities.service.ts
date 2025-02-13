@@ -31,6 +31,6 @@ export class ActivitiesService {
       .get();
 
     const activities = activitiesSnapshot.docs.map((doc) => doc.data());
-    return { activities };
+    return activities;
   }
 }

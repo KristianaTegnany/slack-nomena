@@ -53,7 +53,7 @@ const DMPage = ({ params }: { params: Usable<Params> }) => {
         {interlocutor && <DMHeader name={interlocutor.displayName} id={interlocutor.email} urlProfile={interlocutor.photoURL} />}
       </div>
 
-      <div className=" overflow-y-auto pb-8">
+      <div className=" overflow-y-auto pb-8 px-4">
         <div className="flex-1 flex flex-col pb-4 mt-12">
           <div className="flex flex-col gap-y-2 h-full items-center justify-center">
             {interlocutor && <div className="flex items-center gap-x-4">

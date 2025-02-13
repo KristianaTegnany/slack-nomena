@@ -45,7 +45,7 @@ const ChannelPage = ({ params }: { params: Usable<Params> }) => {
       <div className=" border-b space-y-4">
         {channel && <ChannelHeader name={channel.name} id={channel.id!} />}
       </div>
-      <div className=" overflow-y-auto pb-8">
+      <div className=" overflow-y-auto pb-8 px-4">
         {channel && <div className="flex-1 flex flex-col pb-4 mt-12">
           <div className="flex flex-col gap-y-2 h-full items-center justify-center">
             <div className="flex items-center gap-x-4">

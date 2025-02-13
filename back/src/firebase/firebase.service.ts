@@ -26,6 +26,21 @@ export class FirebaseService {
     this.firestoreDB = admin.firestore();
   }
 
+  // onModuleInit() {
+  //   console.log('herreee');
+  //   if (!admin.apps.length) {
+  //     this.firebaseApp = admin.initializeApp({
+  //       credential: admin.credential.cert(
+  //         serviceAccount as admin.ServiceAccount,
+  //       ),
+  //       databaseURL: 'https://slack-1975b-default-rtdb.firebaseio.com',
+  //     });
+  //   } else {
+  //     this.firebaseApp = admin.app();
+  //   }
+  //   this.database = this.firebaseApp.database();
+  // }
+
   async verifyToken(token: string) {
     try {
       return await this.auth.verifyIdToken(token);
@@ -64,6 +79,10 @@ export class FirebaseService {
 
   getCollection(collection: string) {
     return this.firestoreDB.collection(collection);
+  }
+
+  getUserById(uid: string) {
+    return this.auth.getUser(uid)
   }
 
   get FieldValue() {

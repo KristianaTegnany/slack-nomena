@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { FirebaseService } from 'src/firebase/firebase.service';
 
@@ -30,5 +30,10 @@ export class AuthController {
   @Post('signin/email')
   async signInEmailPass(@Body('token') token: string) {
     return this.authService.signInEmailPass(token);
+  }
+
+  @Get(':uid')
+  async getUser(@Param('uid') uid: string) {
+    return this.authService.getUser(uid)
   }
 }

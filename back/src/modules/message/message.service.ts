@@ -37,7 +37,7 @@ export class MessageService {
       .get();
 
     const messages = messagesSnapshot.docs.map((doc) => doc.data());
-    return { messages };
+    return messages;
   }
 
   //message senter for private
@@ -74,7 +74,7 @@ export class MessageService {
     // const messagesSnapshot = await query.orderBy('sentAt', 'asc').get();
     const messagesSnapshot = await query.get();
     const messages = messagesSnapshot.docs.map((doc) => doc.data());
-    return { messages };
+    return messages;
   }
 
   //message getter for private message

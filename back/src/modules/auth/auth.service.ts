@@ -19,6 +19,14 @@ export class AuthService {
     return { message: 'Sign in successfuly', user };
   }
 
+  async getUser(uid: string) {
+    const userRecord = await this.firebaseService.getUserById(uid)
+    if(!userRecord) {
+      throw new Error("User not found");
+    }
+    return userRecord
+  }
+
   async signInEmailPass(token: string) {
     const decodedToken = await this.firebaseService.verifyToken(token);
     const user = {

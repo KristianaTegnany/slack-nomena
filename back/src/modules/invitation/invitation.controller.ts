@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { InvitationService } from './invitation.service';
 
 @Controller('invitation')
@@ -9,13 +9,16 @@ export class InvitationController {
   async sendInvitation(
     @Param('id') workspaceId: string,
     @Body('inviterId') inviterId: string,
-    @Body('inviteeEmail') inviteeEmail: string,
   ) {
     return this.invitationService.sendInvitation(
       workspaceId,
-      inviterId,
-      inviteeEmail,
+      inviterId
     );
+  }
+
+  @Get(':id')
+  async getInvitationById(@Param('id') id: string){
+    return this.invitationService.getInvitationById(id)
   }
 
   @Post(':id/accept')

@@ -32,7 +32,7 @@ export class MessageController {
     );
   }
 
-  @Get('messages/:id/private')
+  @Post('messages/:id/private')
   async getPrivateMessages(
     @Param('id') userId: string,
     @Body('withUserId') withUserId?: string,

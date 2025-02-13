@@ -5,12 +5,14 @@ import { v4 } from 'uuid';
 
 @Injectable()
 export class InvitationService {
-  constructor(private readonly firebaseService: FirebaseService) {}
+  private db: FirebaseFirestore.Firestore;
+  constructor(private readonly firebaseService: FirebaseService) { 
+    this.db = this.firebaseService.getFirestore();
+  }
 
   async sendInvitation(
     workspaceId: string,
     inviterId: string,
-    inviteeEmail: string,
   ) {
     const id = v4();
     const invitationRef = this.firebaseService
@@ -20,12 +22,20 @@ export class InvitationService {
       id,
       workspaceId,
       inviterId,
-      inviteeEmail,
       status: 'pending',
     };
 
     await invitationRef.set(invitationData);
-    return { message: 'Invitation sent', invitationId: invitationRef.id };
+    return { message: 'Invitation set', invitation: invitationData };
+  }
+
+  async getInvitationById(id: string) {
+    const docRef = this.db.collection("invitations").doc(id)
+    const docSnap = await docRef.get()
+    if(!docSnap.exists) {
+      return new Error("Invitation not found");
+    }
+    return docSnap.data()
   }
 
   async acceptInvitation(invitationId: string, userId: string) {
@@ -55,6 +65,6 @@ export class InvitationService {
     return {
       message: 'Invitation accepted',
       workspaceId: invitation.workspaceId,
-    };
+    };  
   }
 }

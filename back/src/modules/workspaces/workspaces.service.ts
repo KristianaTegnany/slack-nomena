@@ -20,22 +20,37 @@ export class WorkspacesService {
   }
 
   async findByUserId(userid: string) {
-    const snapshot = await this.db
-      .collection('workspaces')
-      .where('userid', '==', userid)
+    const userWorkspacesSnapshot = await this.db
+      .collection("workspaces")
+      .where("userid", "==", userid)
       .get();
 
-    return snapshot.docs.map((doc) => doc.data());
+    const memberWorkspacesSnapshot = await this.db
+      .collection("workspaces")
+      .where("members", "array-contains", userid)
+      .get();
+
+    const workspacesMap = new Map<string, any>();
+
+    userWorkspacesSnapshot.docs.forEach((doc) => {
+      workspacesMap.set(doc.id, { id: doc.id, ...doc.data() });
+    });
+
+    memberWorkspacesSnapshot.docs.forEach((doc) => {
+      workspacesMap.set(doc.id, { id: doc.id, ...doc.data() });
+    });
+
+    return Array.from(workspacesMap.values()) as CreateWorkspaceDto[]
   }
 
   async findWorkspaceById(workspaceId: string) {
     const docRef = this.db.collection("workspaces").doc(workspaceId);
     const docSnap = await docRef.get();
-  
+
     if (!docSnap.exists) {
       throw new Error("Workspace not found");
     }
-  
+
     return docSnap.data();
   }
 
